@@ -1,20 +1,21 @@
+const { responseError, responseSuccess } = require('../utils/responseHandler');
 const Product = require('../models/product');
 
 const createProduct = async (req, res) => {
     try {
         const product = await Product.create(req.body);
-        res.json(product);
+        return responseSuccess(res, product, 'Product created successfully', 201);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to create product.' });
+        return responseError(res, 'Failed to create product', 500);
     }
 };
 
 const getAllProducts = async (req, res) => {
     try {
         const products = await Product.findAll();
-        res.json(products);
+        return responseSuccess(res, products, 'Products retrieved successfully', 200);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch products.' });
+        return responseError(res, 'Failed to fetch products', 500);
     }
 };
 
@@ -22,12 +23,12 @@ const getProductById = async (req, res) => {
     try {
         const product = await Product.findByPk(req.params.id);
         if (!product) {
-            res.status(404).json({ message: 'Product not found.' });
+            return responseError(res, 'Product not found', 404);
         } else {
-            res.json(product);
+            return responseSuccess(res, product, 'Product retrieved successfully', 200);
         }
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch product.' });
+        return responseError(res, 'Failed to fetch product', 500);
     }
 };
 
@@ -37,13 +38,13 @@ const updateProduct = async (req, res) => {
             where: { id: req.params.id }
         });
         if (updatedRowsCount === 0) {
-            res.status(404).json({ message: 'Product not found.' });
+            return responseError(res, 'Product not found', 404);
         } else {
             const product = await Product.findByPk(req.params.id);
-            res.json(product);
+            return responseSuccess(res, product, 'Product updated successfully', 200);
         }
     } catch (error) {
-        res.status(500).json({ message: 'Failed to update product.' });
+        return responseError(res, 'Failed to update product', 500);
     }
 };
 
@@ -51,12 +52,12 @@ const deleteProduct = async (req, res) => {
     try {
         const deletedRowsCount = await Product.destroy({ where: { id: req.params.id } });
         if (deletedRowsCount === 0) {
-            res.status(404).json({ message: 'Product not found.' });
+            return responseError(res, 'Product not found', 404);
         } else {
-            res.json({ message: 'Product deleted successfully.' });
+            return responseSuccess(res, null, 'Product deleted successfully', 200);
         }
     } catch (error) {
-        res.status(500).json({ message: 'Failed to delete product.' });
+        return responseError(res, 'Failed to delete product', 500);
     }
 };
 
