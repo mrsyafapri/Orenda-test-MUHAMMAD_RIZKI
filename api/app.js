@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const productRoutes = require('./routes/product');
+const customerRoutes = require('./routes/customer');
 
 const app = express();
 const router = express.Router();
@@ -19,8 +20,9 @@ router.get('/', (req, res) => {
 });
 
 router.use('/product', productRoutes);
+router.use('/customer', customerRoutes);
 
 app.use('/api/v1', router);
 app.listen(port, () => {
-    console.log(`CusProd: listening on port ${port}`);
+    console.log(`CusProd API: listening on port ${port}`);
 });
