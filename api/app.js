@@ -2,7 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 
+const swaggerSpec = require('./swagger');
 const productRoutes = require('./routes/product');
 const customerRoutes = require('./routes/customer');
 
@@ -23,6 +25,7 @@ router.use('/product', productRoutes);
 router.use('/customer', customerRoutes);
 
 app.use('/api/v1', router);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.listen(port, () => {
     console.log(`CusProd API: listening on port ${port}`);
 });
