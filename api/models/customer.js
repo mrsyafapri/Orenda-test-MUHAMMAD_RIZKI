@@ -1,17 +1,17 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/database");
 
-const Customer = sequelize.define('customer', {
+const Customer = sequelize.define("customer", {
     name: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(100), // Set maximum length to 100 characters
+        allowNull: false,
     },
     phone: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(15), // Set maximum length to 15 characters for phone numbers
+        allowNull: false,
     },
     email: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100), // Set maximum length to 100 characters
         allowNull: false,
         unique: true,
         validate: {
@@ -19,11 +19,13 @@ const Customer = sequelize.define('customer', {
         },
     },
     address: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(255), // Set maximum length to 255 characters
+        allowNull: false,
+    },
+},
+    {
+        timestamps: false,
     }
-}, {
-    timestamps: false
-});
+);
 
 module.exports = Customer;
